@@ -1,0 +1,24 @@
+
+```gitignore
+# File: .gitignore
+# Maven
+/target/
+!.mvn/wrapper/maven-wrapper.jar
+.mvn/timing.properties
+
+# IDEs
+*.iml
+.idea/
+.project
+.classpath
+.settings/
+bin/
+
+# VS Code
+.vscode/
+.history/
+*.code-workspace
+
+# OS
+.DS_Store
+Thumbs.db

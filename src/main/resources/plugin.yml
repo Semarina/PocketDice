@@ -1,0 +1,25 @@
+# File: D:\PocketDice\src\main\resources\plugin.yml
+name: PocketDice
+main: me.sepehrhn.pocketdice.PocketDice
+version: 0.1.0
+api-version: "1.21"
+author: "SepehrHN"
+description: "Roll dice and announce to nearby players."
+
+commands:
+  roll:
+    description: "Roll dice with NdM (e.g., 2d6). No args = 1d100."
+    usage: "/roll [NdM]"
+    permission: pocketdice.roll
+  pocketdice:
+    description: "PocketDice admin commands."
+    usage: "/pocketdice reload"
+    permission: pocketdice.reload
+
+permissions:
+  pocketdice.roll:
+    description: "Allows using /roll"
+    default: true
+  pocketdice.reload:
+    description: "Allows /pocketdice reload"
+    default: op

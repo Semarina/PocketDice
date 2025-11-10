@@ -1,0 +1,8 @@
+# File: D:\PocketDice\src\main\resources\config.yml
+radius: 16
+default_notation: "1d100"
+max_dice: 50
+max_faces: 1000
+message_format: "&b[PocketDice]&r {player} rolled &e{notation}&r: &7{results}&r (total &a{total}&r)"
+error_format: "&c[PocketDice]&r {message}"
+allow_shorthand_d: true
