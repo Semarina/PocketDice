@@ -1,0 +1,27 @@
+name: Bug report
+description: Report a problem in PocketDice
+title: "[BUG] <short summary>"
+labels: [bug, needs-triage]
+body:
+  - type: textarea
+    id: steps
+    attributes:
+      label: What happened?
+      description: Steps to reproduce and what you expected.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: PocketDice version
+      placeholder: v0.1.0
+  - type: dropdown
+    id: server
+    attributes:
+      label: Server type
+      options: [Paper 1.21.x, Purpur 1.21.x]
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / stack traces
+      description: Paste relevant lines.
