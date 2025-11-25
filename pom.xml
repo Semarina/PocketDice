@@ -9,7 +9,7 @@
   <artifactId>PocketDice</artifactId>
   <version>0.2.0</version>
   <name>PocketDice</name>
-  <description>Lightweight proximity dice rolls for Paper/Purpur/Folia 1.21.4</description>
+  <description>Lightweight proximity dice rolls for Paper/Folia 1.21.4</description>
   <url>https://github.com/SepehrHN/PocketDice</url>
 
   <properties>
