@@ -1,9 +1,12 @@
 // File: src/main/java/me/sepehrhn/pocketdice/util/Text.java
 package me.sepehrhn.pocketdice.util;
 
+import me.sepehrhn.pocketdice.PocketDice;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.Collections;
+import java.util.Map;
 
 /** Simple text utilities for placeholder replacement and coloring. */
 public final class Text {
@@ -26,9 +29,14 @@ public final class Text {
         return ChatColor.translateAlternateColorCodes('&', s);
     }
 
-    /** Send a formatted message using error_format from config (used for status + errors). */
-    public static void sendError(JavaPlugin plugin, CommandSender sender, String message) {
-        String fmt = plugin.getConfig().getString("error_format", "[PocketDice] {message}");
-        sender.sendMessage(color(format(fmt, "message", message)));
+    /** Send a locale-backed message with optional placeholders. */
+    public static void sendLocale(PocketDice plugin, CommandSender sender, String key) {
+        sendLocale(plugin, sender, key, Collections.emptyMap());
+    }
+
+    /** Send a locale-backed message with optional placeholders. */
+    public static void sendLocale(PocketDice plugin, CommandSender sender, String key, Map<String, String> placeholders) {
+        String raw = plugin.getLocaleManager().get(sender, key, placeholders);
+        sender.sendMessage(color(raw));
     }
 }

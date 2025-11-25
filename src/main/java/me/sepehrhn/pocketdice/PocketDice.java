@@ -4,6 +4,7 @@ package me.sepehrhn.pocketdice;
 import me.sepehrhn.pocketdice.commands.PocketDiceAdminCommand;
 import me.sepehrhn.pocketdice.commands.RollCommand;
 import me.sepehrhn.pocketdice.config.ConfigUpdater;
+import me.sepehrhn.pocketdice.locale.LocaleManager;
 import me.sepehrhn.pocketdice.update.UpdateChecker;
 import me.sepehrhn.pocketdice.update.UpdateNotifyListener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -13,6 +14,7 @@ import java.io.IOException;
 public class PocketDice extends JavaPlugin {
 
     private UpdateChecker updateChecker;
+    private LocaleManager localeManager;
 
     @Override
     public void onEnable() {
@@ -23,6 +25,9 @@ public class PocketDice extends JavaPlugin {
             getLogger().severe("Failed to update config.yml: " + e.getMessage());
         }
         reloadConfig();
+
+        localeManager = new LocaleManager(this);
+        localeManager.reload();
 
         initUpdateChecker();
 
@@ -67,6 +72,10 @@ public class PocketDice extends JavaPlugin {
 
     public UpdateChecker getUpdateChecker() {
         return updateChecker;
+    }
+
+    public LocaleManager getLocaleManager() {
+        return localeManager;
     }
 
     public void restartUpdateChecker() {

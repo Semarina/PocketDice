@@ -1,0 +1,18 @@
+messages:
+  prefix: "&b[PocketDice]&r "
+  command:
+    player_only: "{prefix}Only players can use this command."
+    no_permission: "{prefix}You don't have permission to do that."
+    usage_roll: "{prefix}Usage: /roll <notation>"
+    reload_usage: "{prefix}Usage: /pocketdice reload"
+    reload_success: "{prefix}Config reloaded and updated."
+    reload_failure: "{prefix}Failed to update config.yml. Check console for details."
+  roll:
+    missing_notation: "{prefix}Please provide a notation like 1d6 or d8."
+    invalid_notation: "{prefix}Invalid notation. Use NdM like 2d6{or_d}."
+    dice_nan: "{prefix}Number of dice (N) must be a number."
+    faces_nan: "{prefix}Number of faces (M) must be a number."
+    dice_too_low: "{prefix}Number of dice (N) must be >= 1."
+    faces_too_low: "{prefix}Number of faces (M) must be >= 2."
+    limits_exceeded: "{prefix}Requested {notation} exceeds limits (max_dice={max_dice}, max_faces={max_faces})."
+    result: "{prefix}{player} rolled {notation}: {results} (total {total})"

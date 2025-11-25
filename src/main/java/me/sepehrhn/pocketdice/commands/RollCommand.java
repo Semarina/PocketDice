@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class RollCommand implements CommandExecutor, TabCompleter {
@@ -23,11 +24,11 @@ public class RollCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player player)) {
-            Text.sendError(plugin, sender, "Only players can use /roll.");
+            Text.sendLocale(plugin, sender, "messages.command.player_only");
             return true;
         }
         if (!sender.hasPermission("pocketdice.roll")) {
-            Text.sendError(plugin, sender, "You don't have permission to use this command.");
+            Text.sendLocale(plugin, sender, "messages.command.no_permission");
             return true;
         }
 
@@ -43,8 +44,8 @@ public class RollCommand implements CommandExecutor, TabCompleter {
         final DiceParser.DiceSpec spec;
         try {
             spec = DiceParser.parse(notation, allowShorthand);
-        } catch (IllegalArgumentException ex) {
-            Text.sendError(plugin, sender, ex.getMessage());
+        } catch (DiceParser.DiceParseException ex) {
+            handleParseError(sender, allowShorthand, ex);
             return true;
         }
 
@@ -53,9 +54,11 @@ public class RollCommand implements CommandExecutor, TabCompleter {
 
         // Clamp to caps; inform only the roller
         if (spec.dice() > maxDice || spec.faces() > maxFaces) {
-            Text.sendError(plugin, sender,
-                "Requested " + spec.dice() + "d" + spec.faces()
-                + " exceeds limits (max_dice=" + maxDice + ", max_faces=" + maxFaces + ").");
+            Text.sendLocale(plugin, sender, "messages.roll.limits_exceeded", Map.of(
+                    "notation", spec.dice() + "d" + spec.faces(),
+                    "max_dice", Integer.toString(maxDice),
+                    "max_faces", Integer.toString(maxFaces)
+            ));
             return true;
         }
 
@@ -70,14 +73,12 @@ public class RollCommand implements CommandExecutor, TabCompleter {
         }
 
         final String finalNotation = dice + "d" + faces;
-        final String msg = Text.color(Text.format(
-                plugin.getConfig().getString("message_format",
-                        "[PocketDice] {player} rolled {notation}: {results} (total {total})"),
+        final String msg = Text.color(plugin.getLocaleManager().get(player, "messages.roll.result", Map.of(
                 "player", player.getName(),
                 "notation", finalNotation,
                 "results", rolls.toString(),
                 "total", Integer.toString(total)
-        ));
+        )));
 
         // Send to roller
         player.sendMessage(msg);
@@ -102,5 +103,19 @@ public class RollCommand implements CommandExecutor, TabCompleter {
             return List.of("1d100", "1d6", "2d6", "d20");
         }
         return List.of();
+    }
+
+    private void handleParseError(CommandSender sender, boolean allowShorthand, DiceParser.DiceParseException ex) {
+        String key = switch (ex.getError()) {
+            case MISSING_NOTATION -> "messages.roll.missing_notation";
+            case INVALID_NOTATION -> "messages.roll.invalid_notation";
+            case DICE_NAN -> "messages.roll.dice_nan";
+            case FACES_NAN -> "messages.roll.faces_nan";
+            case DICE_TOO_LOW -> "messages.roll.dice_too_low";
+            case FACES_TOO_LOW -> "messages.roll.faces_too_low";
+        };
+
+        Map<String, String> placeholders = Map.of("or_d", ex.isShorthandAllowed() ? " or d8" : "");
+        Text.sendLocale(plugin, sender, key, placeholders);
     }
 }

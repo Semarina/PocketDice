@@ -20,7 +20,7 @@ public class PocketDiceAdminCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (!sender.hasPermission("pocketdice.reload")) {
-            Text.sendError(plugin, sender, "You don't have permission to do that.");
+            Text.sendLocale(plugin, sender, "messages.command.no_permission");
             return true;
         }
 
@@ -29,15 +29,16 @@ public class PocketDiceAdminCommand implements CommandExecutor, TabCompleter {
                 ConfigUpdater.updateConfig(plugin);
                 plugin.reloadConfig();
                 plugin.restartUpdateChecker();
-                Text.sendError(plugin, sender, "Config reloaded and updated.");
+                plugin.getLocaleManager().reload();
+                Text.sendLocale(plugin, sender, "messages.command.reload_success");
             } catch (IOException | IllegalStateException e) {
                 plugin.getLogger().severe("Failed to update config.yml on reload: " + e.getMessage());
-                Text.sendError(plugin, sender, "Failed to update config.yml. Check console for details.");
+                Text.sendLocale(plugin, sender, "messages.command.reload_failure");
             }
             return true;
         }
 
-        Text.sendError(plugin, sender, "Usage: /pocketdice reload");
+        Text.sendLocale(plugin, sender, "messages.command.reload_usage");
         return true;
     }
 

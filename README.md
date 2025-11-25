@@ -9,6 +9,12 @@ Lightweight proximity dice rolls for **Paper/Purpur 1.21.x**.
 - Permissions: `pocketdice.roll` (true), `pocketdice.reload` (op), `pocketdice.update.notify` (op).
 - Admin: `/pocketdice reload` — reloads config & messages.
 
+## Localization / Translations
+- Default locale: `plugins/PocketDice/locale/en_US.yml` (copied from the JAR on first run).
+- Add translations by copying `en_US.yml` to a new file (e.g., `tr_TR.yml`) in `plugins/PocketDice/locale/`, then translating values.
+- The plugin automatically picks the player’s Minecraft language (e.g., `tr_TR`) if a matching file exists; otherwise it falls back to `en_US`.
+- Reload locales with `/pocketdice reload` after editing/adding locale files.
+
 ## Compatibility
 
 ### Minecraft versions
