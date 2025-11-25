@@ -1,14 +1,12 @@
-# File: README.md
 # PocketDice
 
 Lightweight proximity dice rolls for **Paper/Purpur 1.21.x**.
 
 ## What it does
-- `/roll [NdM]` — roll N dice with M faces.  
-  Examples: `/roll` (default `1d100`), `/roll 1d6`, `/roll 2d20`, `/roll d8` (if shorthand enabled).
-- Announces the result **only** to players in the same world within **radius** blocks.
+- `/roll [NdM]` — roll N dice with M faces. Examples: `/roll` (default `1d100`), `/roll 1d6`, `/roll 2d20`, `/roll d8` (if shorthand enabled).
+- Announces the result only to players in the same world within `radius` blocks.
 - Shows player name, notation (e.g., `2d20`), individual rolls (e.g., `[7, 13]`), and total (e.g., `20`).
-- Permissions: `pocketdice.roll` (true), `pocketdice.reload` (op).
+- Permissions: `pocketdice.roll` (true), `pocketdice.reload` (op), `pocketdice.update.notify` (op).
 - Admin: `/pocketdice reload` — reloads config & messages.
 
 ## Compatibility
@@ -16,22 +14,23 @@ Lightweight proximity dice rolls for **Paper/Purpur 1.21.x**.
 ### Minecraft versions
 | MC Version | Status | Notes |
 |---|---|---|
-| 1.21.x | ✅ Supported | Built against the 1.21 API (`api-version: "1.21"`). |
-| < 1.21 | ❌ Not supported | Requires MC 1.21.x. |
+| 1.21.x | Supported | Built against the 1.21 API (`api-version: "1.21"`). |
+| < 1.21 | Not supported | Requires MC 1.21.x. |
 
 ### Server software
 | Server | 1.21.x | Notes |
-|---|---:|---|
-| **Purpur** | ✅ | Primary target; tested. |
-| **Paper** | ✅ | Supported; no Paper-only APIs used. |
-| **Spigot** | ✅ | Supported via Bukkit API. |
-| **Folia** | ⚠️ | Untested; should work if everything runs on main thread. |
-| **Fabric / Forge / NeoForge / Quilt** | ❌ | Not applicable (those are mod loaders, not Bukkit/Paper). |
+|---|---|---|
+| **Purpur** | Supported | Primary target; tested. |
+| **Paper** | Supported | Supported; no Paper-only APIs used. |
+| **Spigot** | Supported | Supported via Bukkit API. |
+| **Folia** | Untested | Should work if everything runs on the main thread. |
+| **Fabric / Forge / NeoForge / Quilt** | Not applicable | These are mod loaders, not Bukkit/Paper. |
 
 **Java:** Use Java 21 (required for MC 1.21.x servers).
 
 ## Config (`plugins/PocketDice/config.yml`)
 ```yml
+config-version: 2
 radius: 16
 default_notation: "1d100"
 max_dice: 50
@@ -39,3 +38,23 @@ max_faces: 1000
 message_format: "[PocketDice] {player} rolled {notation}: {results} (total {total})"
 error_format: "[PocketDice] {message}"
 allow_shorthand_d: true
+updates:
+  enabled: true
+  modrinth_project_slug: "pocketdice"  # Modrinth project slug (or ID)
+  check_on_startup: true
+  check_interval_hours: 24             # 0 or negative = startup-only
+  notify_console: true
+  notify_admins_on_join: true
+  admin_notify_permission: "pocketdice.update.notify"
+  messages:
+    up_to_date_console: "[PocketDice] You are running the latest version: {current}."
+    update_available_console: "[PocketDice] A new version is available: {latest} (current: {current}). Download: {url}"
+    update_available_admin: "<yellow>[PocketDice]</yellow> <gray>New version available:</gray> <gold>{latest}</gold> <gray>(current:</gray> <gold>{current}</gold><gray>)</gray>"
+```
+
+## Update checking
+- Uses the Modrinth API to look up the latest PocketDice release and compare it to the running version.
+- Checks on startup and, optionally, every `check_interval_hours`; both are controlled under the `updates` block.
+- Set `updates.enabled: false` to disable all HTTP calls.
+- Console messages and in-game admin notifications use the `updates.messages.*` templates.
+- Permission for in-game notifications: `pocketdice.update.notify` (default: op).

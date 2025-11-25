@@ -23,3 +23,6 @@ permissions:
   pocketdice.reload:
     description: "Allows /pocketdice reload"
     default: op
+  pocketdice.update.notify:
+    description: "Receive PocketDice update notifications when a new version is available."
+    default: op

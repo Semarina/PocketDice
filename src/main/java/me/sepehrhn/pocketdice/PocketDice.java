@@ -4,11 +4,15 @@ package me.sepehrhn.pocketdice;
 import me.sepehrhn.pocketdice.commands.PocketDiceAdminCommand;
 import me.sepehrhn.pocketdice.commands.RollCommand;
 import me.sepehrhn.pocketdice.config.ConfigUpdater;
+import me.sepehrhn.pocketdice.update.UpdateChecker;
+import me.sepehrhn.pocketdice.update.UpdateNotifyListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
 
 public class PocketDice extends JavaPlugin {
+
+    private UpdateChecker updateChecker;
 
     @Override
     public void onEnable() {
@@ -19,6 +23,10 @@ public class PocketDice extends JavaPlugin {
             getLogger().severe("Failed to update config.yml: " + e.getMessage());
         }
         reloadConfig();
+
+        initUpdateChecker();
+
+        getServer().getPluginManager().registerEvents(new UpdateNotifyListener(this), this);
 
         // /roll command
         var roll = getCommand("roll");
@@ -51,6 +59,27 @@ public class PocketDice extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        if (updateChecker != null) {
+            updateChecker.shutdown();
+        }
         getLogger().info("PocketDice disabled.");
+    }
+
+    public UpdateChecker getUpdateChecker() {
+        return updateChecker;
+    }
+
+    public void restartUpdateChecker() {
+        initUpdateChecker();
+    }
+
+    private void initUpdateChecker() {
+        if (updateChecker == null) {
+            updateChecker = new UpdateChecker(this);
+        } else {
+            updateChecker.shutdown();
+        }
+        updateChecker.initFromConfig();
+        updateChecker.start();
     }
 }

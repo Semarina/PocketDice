@@ -28,6 +28,7 @@ public class PocketDiceAdminCommand implements CommandExecutor, TabCompleter {
             try {
                 ConfigUpdater.updateConfig(plugin);
                 plugin.reloadConfig();
+                plugin.restartUpdateChecker();
                 Text.sendError(plugin, sender, "Config reloaded and updated.");
             } catch (IOException | IllegalStateException e) {
                 plugin.getLogger().severe("Failed to update config.yml on reload: " + e.getMessage());

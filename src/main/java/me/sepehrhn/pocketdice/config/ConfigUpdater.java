@@ -91,7 +91,7 @@ public final class ConfigUpdater {
     }
 
     private static void migrateToV2(YamlConfiguration config) {
-        // Placeholder for future migrations.
+        // Version 2 adds the configurable Modrinth update checker; defaults are merged below.
     }
 
     private static boolean mergeDefaults(ConfigurationSection existing, ConfigurationSection defaults) {

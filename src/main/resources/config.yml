@@ -1,6 +1,6 @@
 # Do not change this value manually.
 # It is used by PocketDice to automatically update this file between versions.
-config-version: 1
+config-version: 2
 radius: 16
 default_notation: "1d100"
 max_dice: 50
@@ -8,3 +8,18 @@ max_faces: 1000
 message_format: "&b[PocketDice]&r {player} rolled &e{notation}&r: &7{results}&r (total &a{total}&r)"
 error_format: "&c[PocketDice]&r {message}"
 allow_shorthand_d: true
+
+# Optional Modrinth update checks for PocketDice.
+# Set enabled to false to disable HTTP calls entirely.
+updates:
+  enabled: true
+  modrinth_project_slug: "pocketdice"  # Modrinth project slug (or ID)
+  check_on_startup: true
+  check_interval_hours: 24             # 0 or negative = startup-only
+  notify_console: true
+  notify_admins_on_join: true
+  admin_notify_permission: "pocketdice.update.notify"
+  messages:
+    up_to_date_console: "[PocketDice] You are running the latest version: {current}."
+    update_available_console: "[PocketDice] A new version is available: {latest} (current: {current}). Download: {url}"
+    update_available_admin: "<yellow>[PocketDice]</yellow> <gray>New version available:</gray> <gold>{latest}</gold> <gray>(current:</gray> <gold>{current}</gold><gray>)</gray>"
