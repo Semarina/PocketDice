@@ -1,6 +1,6 @@
 # PocketDice
 
-Lightweight proximity dice rolls for **Paper/Purpur 1.21.x**.
+Lightweight proximity dice rolls for **Paper/Purpur/Folia 1.21.x**.
 
 ## What it does
 - `/roll [NdM]` - roll N dice with M faces. Examples: `/roll` (default `1d100`), `/roll 1d6`, `/roll 2d20`, `/roll d8` (if shorthand enabled).
@@ -27,9 +27,9 @@ Lightweight proximity dice rolls for **Paper/Purpur 1.21.x**.
 | Server | 1.21.x | Notes |
 |---|---|---|
 | **Purpur** | Supported | Primary target; tested. |
-| **Paper** | Supported | Supported; no Paper-only APIs used. |
-| **Spigot** | Supported | Supported via Bukkit API. |
-| **Folia** | Untested | Should work if everything runs on the main thread. |
+| **Paper** | Supported | Supported and tested. |
+| **Folia** | Supported | Declared folia-supported; main thread logic only. |
+| **Spigot** | Not supported | Targeted at Paper/Purpur/Folia only. |
 | **Fabric / Forge / NeoForge / Quilt** | Not applicable | These are mod loaders, not Bukkit/Paper. |
 
 **Java:** Use Java 21 (required for MC 1.21.x servers).
