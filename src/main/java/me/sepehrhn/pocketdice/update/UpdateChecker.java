@@ -212,7 +212,7 @@ public class UpdateChecker {
         if (key == null) return;
         String message = plugin.getLocaleManager().getDefault(key, placeholderMap(result));
         if (message != null && !message.isBlank()) {
-            plugin.getLogger().info(Text.color(message));
+            plugin.getLogger().info(Text.toLegacy(message));
         }
     }
 

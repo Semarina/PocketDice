@@ -9,6 +9,7 @@ import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.NamespacedKey;
+import net.kyori.adventure.text.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,15 +78,16 @@ public class RollCommand implements CommandExecutor, TabCompleter {
         }
 
         final String finalNotation = dice + "d" + faces;
-        final String msg = Text.color(plugin.getLocaleManager().get(player, "messages.roll.result", Map.of(
+        final String msg = plugin.getLocaleManager().get(player, "messages.roll.result", Map.of(
                 "player", player.getName(),
                 "notation", finalNotation,
                 "results", rolls.toString(),
                 "total", Integer.toString(total)
-        )));
+        ));
+        Component msgComponent = Text.toComponent(msg);
 
         // Send to roller
-        player.sendMessage(msg);
+        player.sendMessage(msgComponent);
 
         // Send to players within radius (same world). Use distanceSquared for performance.
         final Location origin = player.getLocation();
@@ -94,7 +96,7 @@ public class RollCommand implements CommandExecutor, TabCompleter {
         for (Player p : player.getWorld().getPlayers()) {
             if (p.equals(player)) continue; // already sent
             if (p.getLocation().distanceSquared(origin) <= r2) {
-                p.sendMessage(msg);
+                p.sendMessage(msgComponent);
             }
         }
 

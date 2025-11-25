@@ -38,6 +38,6 @@ public class UpdateNotifyListener implements Listener {
                 "url", fallbackUrl
         ));
         if (message == null || message.isBlank()) return;
-        player.sendMessage(Text.color(message));
+        player.sendMessage(Text.toComponent(message));
     }
 }

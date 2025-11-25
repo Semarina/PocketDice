@@ -6,6 +6,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashMap;
@@ -29,34 +30,26 @@ public class LocaleManager {
 
     public void reload() {
         locales.clear();
+        try {
+            LocaleUpdater.updateLocales(plugin);
+        } catch (IOException ex) {
+            logger.warning("Failed to update locale files: " + ex.getMessage());
+        }
 
         File localeDir = new File(plugin.getDataFolder(), "locale");
-        if (!localeDir.exists() && !localeDir.mkdirs()) {
-            logger.warning("Could not create locale directory: " + localeDir.getAbsolutePath());
-        }
-
-        // Ensure default locale exists in data folder
-        File defaultFile = new File(localeDir, DEFAULT_LOCALE + ".yml");
-        if (!defaultFile.exists()) {
-            plugin.saveResource("locale/" + DEFAULT_LOCALE + ".yml", false);
-        }
-
         File[] files = localeDir.listFiles((dir, name) -> name.toLowerCase(Locale.ROOT).endsWith(".yml"));
         if (files != null) {
-            YamlConfiguration defaultConfig = loadDefaultResource();
             for (File file : files) {
                 String name = file.getName();
                 String code = name.substring(0, name.length() - 4); // remove .yml
                 YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
-                if (defaultConfig != null) {
-                    yaml.setDefaults(defaultConfig);
-                }
                 locales.put(code, yaml);
             }
         }
 
         if (!locales.containsKey(DEFAULT_LOCALE)) {
             logger.warning("Default locale " + DEFAULT_LOCALE + " missing; attempting to restore.");
+            File defaultFile = new File(localeDir, DEFAULT_LOCALE + ".yml");
             plugin.saveResource("locale/" + DEFAULT_LOCALE + ".yml", true);
             locales.put(DEFAULT_LOCALE, YamlConfiguration.loadConfiguration(defaultFile));
         }
