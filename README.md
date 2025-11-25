@@ -36,7 +36,7 @@ Lightweight proximity dice rolls for **Paper/Purpur 1.21.x**.
 
 ## Config (`plugins/PocketDice/config.yml`)
 ```yml
-config-version: 4
+config-version: 5
 radius: 16
 default_notation: "1d100"
 max_dice: 50
@@ -44,7 +44,6 @@ max_faces: 1000
 allow_shorthand: true
 updates:
   enabled: true
-  modrinth_project_slug: "pocketdice"  # Modrinth project slug (or ID)
   check_on_startup: true
   check_interval_hours: 24             # 0 or negative = startup-only
   notify_console: true
@@ -52,7 +51,7 @@ updates:
 sounds:
   roll:
     enabled: true
-    sound_key: "minecraft:block.amethyst_block.chime"
+    sound_key: "minecraft:block.stem.step"
     volume: 0.7
     pitch: 1.2
 ```

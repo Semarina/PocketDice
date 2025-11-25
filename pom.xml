@@ -7,7 +7,7 @@
 
   <groupId>me.sepehrhn</groupId>
   <artifactId>PocketDice</artifactId>
-  <version>0.1.0</version>
+  <version>0.2.0</version>
   <name>PocketDice</name>
   <description>Lightweight proximity dice rolls for Paper/Purpur 1.21.4</description>
   <url>https://github.com/SepehrHN/PocketDice</url>

@@ -1,7 +1,7 @@
 # File: src\main\resources\plugin.yml
 name: PocketDice
 main: me.sepehrhn.pocketdice.PocketDice
-version: 0.1.0
+version: 0.2.0
 api-version: "1.21"
 author: "SepehrHN"
 description: "Roll dice and announce to nearby players."

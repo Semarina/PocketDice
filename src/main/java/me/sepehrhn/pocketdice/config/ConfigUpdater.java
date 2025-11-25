@@ -80,6 +80,7 @@ public final class ConfigUpdater {
                 case 2 -> migrateToV2(config);
                 case 3 -> migrateToV3(config);
                 case 4 -> migrateToV4(config);
+                case 5 -> migrateToV5(config);
                 default -> {
                 }
             }
@@ -109,6 +110,11 @@ public final class ConfigUpdater {
 
         // Remove obsolete admin_notify_permission customization
         config.set("updates.admin_notify_permission", null);
+    }
+
+    private static void migrateToV5(YamlConfiguration config) {
+        // Remove modrinth_project_slug customization; slug is fixed in code
+        config.set("updates.modrinth_project_slug", null);
     }
 
     private static boolean mergeDefaults(ConfigurationSection existing, ConfigurationSection defaults) {

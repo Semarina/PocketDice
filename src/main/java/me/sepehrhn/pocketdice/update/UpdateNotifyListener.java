@@ -29,12 +29,13 @@ public class UpdateNotifyListener implements Listener {
         UpdateCheckResult result = checker.getLastResult();
         if (result == null || result.getStatus() != UpdateCheckStatus.UPDATE_AVAILABLE) return;
 
+        String fallbackUrl = result.getUrl() != null && !result.getUrl().isBlank()
+                ? result.getUrl()
+                : "https://modrinth.com/plugin/pocketdice";
         String message = plugin.getLocaleManager().get(player, "messages.update.available_admin", Map.of(
                 "current", result.getCurrentVersion(),
                 "latest", result.getLatestVersion(),
-                "url", result.getUrl() != null && !result.getUrl().isBlank()
-                        ? result.getUrl()
-                        : "https://modrinth.com/plugin/" + checker.getProjectSlug()
+                "url", fallbackUrl
         ));
         if (message == null || message.isBlank()) return;
         player.sendMessage(Text.color(message));

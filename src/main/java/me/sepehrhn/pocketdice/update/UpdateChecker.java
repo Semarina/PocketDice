@@ -24,6 +24,7 @@ public class UpdateChecker {
 
     private static final String MODRINTH_API_BASE = "https://api.modrinth.com/v2/project/";
     private static final String MODRINTH_PROJECT_PAGE = "https://modrinth.com/plugin/";
+    private static final String PROJECT_SLUG = "pocketdice";
     private static final long MIN_DELAY_TICKS = 20L; // 1 second
     private static final String UPDATE_NOTIFY_PERMISSION = "pocketdice.update.notify";
 
@@ -31,7 +32,6 @@ public class UpdateChecker {
     private final HttpClient httpClient;
 
     private boolean enabled;
-    private String projectSlug;
     private boolean checkOnStartup;
     private long checkIntervalTicks;
     private boolean notifyConsole;
@@ -54,7 +54,6 @@ public class UpdateChecker {
         ConfigurationSection updates = plugin.getConfig().getConfigurationSection("updates");
         if (updates == null) {
             enabled = false;
-            projectSlug = "pocketdice";
             checkOnStartup = false;
             checkIntervalTicks = -1;
             notifyConsole = false;
@@ -65,7 +64,6 @@ public class UpdateChecker {
         }
 
         enabled = updates.getBoolean("enabled", true);
-        projectSlug = updates.getString("modrinth_project_slug", "pocketdice");
         checkOnStartup = updates.getBoolean("check_on_startup", true);
         double intervalHours = updates.getDouble("check_interval_hours", 24.0);
         if (intervalHours > 0) {
@@ -134,8 +132,7 @@ public class UpdateChecker {
 
     private UpdateCheckResult performCheck() throws Exception {
         String currentVersion = plugin.getDescription().getVersion();
-        String slug = projectSlug == null || projectSlug.isBlank() ? "pocketdice" : projectSlug.trim();
-        URI uri = URI.create(MODRINTH_API_BASE + slug + "/version");
+        URI uri = URI.create(MODRINTH_API_BASE + PROJECT_SLUG + "/version");
 
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
@@ -237,10 +234,6 @@ public class UpdateChecker {
                 : UPDATE_NOTIFY_PERMISSION;
     }
 
-    public String getProjectSlug() {
-        return projectSlug;
-    }
-
     private boolean isPreferred(VersionCandidate candidate, VersionCandidate current) {
         if (candidate.release() && !current.release()) {
             return true;
@@ -308,8 +301,7 @@ public class UpdateChecker {
     }
 
     private String projectPageUrl() {
-        String slug = projectSlug == null || projectSlug.isBlank() ? "pocketdice" : projectSlug.trim();
-        return MODRINTH_PROJECT_PAGE + slug;
+        return MODRINTH_PROJECT_PAGE + PROJECT_SLUG;
     }
 
     private record VersionCandidate(String versionNumber, String url, Instant published, boolean release) {
