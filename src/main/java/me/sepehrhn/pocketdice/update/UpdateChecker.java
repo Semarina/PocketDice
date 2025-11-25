@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import me.sepehrhn.pocketdice.PocketDice;
+import me.sepehrhn.pocketdice.util.Text;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.scheduler.BukkitTask;
@@ -16,7 +17,7 @@ import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Objects;
+import java.util.Map;
 
 /** Performs Modrinth update checks for PocketDice. */
 public class UpdateChecker {
@@ -35,9 +36,6 @@ public class UpdateChecker {
     private boolean notifyConsole;
     private boolean notifyAdminsOnJoin;
     private String adminNotifyPermission;
-    private String upToDateMessageConsole;
-    private String updateAvailableMessageConsole;
-    private String updateAvailableMessageAdmin;
 
     private volatile UpdateCheckResult lastResult;
     private BukkitTask intervalTask;
@@ -61,9 +59,6 @@ public class UpdateChecker {
             notifyConsole = false;
             notifyAdminsOnJoin = false;
             adminNotifyPermission = "pocketdice.update.notify";
-            upToDateMessageConsole = "";
-            updateAvailableMessageConsole = "";
-            updateAvailableMessageAdmin = "";
             lastResult = null;
             return;
         }
@@ -81,17 +76,6 @@ public class UpdateChecker {
         notifyConsole = updates.getBoolean("notify_console", true);
         notifyAdminsOnJoin = updates.getBoolean("notify_admins_on_join", true);
         adminNotifyPermission = updates.getString("admin_notify_permission", "pocketdice.update.notify");
-
-        ConfigurationSection messages = updates.getConfigurationSection("messages");
-        upToDateMessageConsole = messages != null
-                ? messages.getString("up_to_date_console", "[PocketDice] You are running the latest version: {current}.")
-                : "[PocketDice] You are running the latest version: {current}.";
-        updateAvailableMessageConsole = messages != null
-                ? messages.getString("update_available_console", "[PocketDice] A new version is available: {latest} (current: {current}). Download: {url}")
-                : "[PocketDice] A new version is available: {latest} (current: {current}). Download: {url}";
-        updateAvailableMessageAdmin = messages != null
-                ? messages.getString("update_available_admin", "<yellow>[PocketDice]</yellow> <gray>New version available:</gray> <gold>{latest}</gold> <gray>(current:</gray> <gold>{current}</gold><gray>)</gray>")
-                : "<yellow>[PocketDice]</yellow> <gray>New version available:</gray> <gold>{latest}</gold> <gray>(current:</gray> <gold>{current}</gold><gray>)</gray>";
 
         lastResult = null;
     }
@@ -222,17 +206,15 @@ public class UpdateChecker {
             return;
         }
 
-        String template = switch (result.getStatus()) {
-            case UPDATE_AVAILABLE -> updateAvailableMessageConsole;
-            case UP_TO_DATE -> upToDateMessageConsole;
+        String key = switch (result.getStatus()) {
+            case UPDATE_AVAILABLE -> "messages.update.available_console";
+            case UP_TO_DATE -> "messages.update.up_to_date_console";
             default -> null;
         };
-        if (template == null || template.isBlank()) {
-            return;
-        }
-        String message = applyPlaceholders(template, result);
+        if (key == null) return;
+        String message = plugin.getLocaleManager().getDefault(key, placeholderMap(result));
         if (message != null && !message.isBlank()) {
-            plugin.getLogger().info(message);
+            plugin.getLogger().info(Text.color(message));
         }
     }
 
@@ -254,18 +236,8 @@ public class UpdateChecker {
                 : "pocketdice.update.notify";
     }
 
-    public String getAdminMessageTemplate() {
-        return updateAvailableMessageAdmin;
-    }
-
-    public String applyPlaceholders(String template, UpdateCheckResult result) {
-        if (template == null) return null;
-        UpdateCheckResult res = Objects.requireNonNullElseGet(result, () -> new UpdateCheckResult(UpdateCheckStatus.UNKNOWN, null, null, null, Instant.now(), null));
-        String url = res.getUrl() != null && !res.getUrl().isBlank() ? res.getUrl() : projectPageUrl();
-        return template
-                .replace("{current}", safe(res.getCurrentVersion()))
-                .replace("{latest}", safe(res.getLatestVersion()))
-                .replace("{url}", url);
+    public String getProjectSlug() {
+        return projectSlug;
     }
 
     private boolean isPreferred(VersionCandidate candidate, VersionCandidate current) {
@@ -319,6 +291,15 @@ public class UpdateChecker {
         } catch (NumberFormatException e) {
             return null;
         }
+    }
+
+    private Map<String, String> placeholderMap(UpdateCheckResult res) {
+        String url = res.getUrl() != null && !res.getUrl().isBlank() ? res.getUrl() : projectPageUrl();
+        return Map.of(
+                "current", safe(res.getCurrentVersion()),
+                "latest", safe(res.getLatestVersion()),
+                "url", url
+        );
     }
 
     private String safe(String value) {

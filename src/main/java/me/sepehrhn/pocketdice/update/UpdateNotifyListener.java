@@ -1,17 +1,18 @@
 package me.sepehrhn.pocketdice.update;
 
 import me.sepehrhn.pocketdice.PocketDice;
-import net.kyori.adventure.text.minimessage.MiniMessage;
+import me.sepehrhn.pocketdice.util.Text;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import java.util.Map;
+
 /** Notifies admins on join when an update is available. */
 public class UpdateNotifyListener implements Listener {
 
     private final PocketDice plugin;
-    private final MiniMessage miniMessage = MiniMessage.miniMessage();
 
     public UpdateNotifyListener(PocketDice plugin) {
         this.plugin = plugin;
@@ -28,16 +29,14 @@ public class UpdateNotifyListener implements Listener {
         UpdateCheckResult result = checker.getLastResult();
         if (result == null || result.getStatus() != UpdateCheckStatus.UPDATE_AVAILABLE) return;
 
-        String template = checker.getAdminMessageTemplate();
-        if (template == null || template.isBlank()) return;
-
-        String message = checker.applyPlaceholders(template, result);
+        String message = plugin.getLocaleManager().get(player, "messages.update.available_admin", Map.of(
+                "current", result.getCurrentVersion(),
+                "latest", result.getLatestVersion(),
+                "url", result.getUrl() != null && !result.getUrl().isBlank()
+                        ? result.getUrl()
+                        : "https://modrinth.com/plugin/" + checker.getProjectSlug()
+        ));
         if (message == null || message.isBlank()) return;
-
-        try {
-            player.sendMessage(miniMessage.deserialize(message));
-        } catch (Exception ex) {
-            player.sendMessage(message);
-        }
+        player.sendMessage(Text.color(message));
     }
 }

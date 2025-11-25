@@ -28,8 +28,8 @@ public class PocketDiceAdminCommand implements CommandExecutor, TabCompleter {
             try {
                 ConfigUpdater.updateConfig(plugin);
                 plugin.reloadConfig();
-                plugin.restartUpdateChecker();
                 plugin.getLocaleManager().reload();
+                plugin.restartUpdateChecker();
                 Text.sendLocale(plugin, sender, "messages.command.reload_success");
             } catch (IOException | IllegalStateException e) {
                 plugin.getLogger().severe("Failed to update config.yml on reload: " + e.getMessage());

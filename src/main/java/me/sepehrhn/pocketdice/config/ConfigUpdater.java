@@ -78,6 +78,7 @@ public final class ConfigUpdater {
             switch (version) {
                 case 1 -> migrateToV1(config);
                 case 2 -> migrateToV2(config);
+                case 3 -> migrateToV3(config);
                 default -> {
                 }
             }
@@ -92,6 +93,10 @@ public final class ConfigUpdater {
 
     private static void migrateToV2(YamlConfiguration config) {
         // Version 2 adds the configurable Modrinth update checker; defaults are merged below.
+    }
+
+    private static void migrateToV3(YamlConfiguration config) {
+        // Version 3 moves user-facing strings to locale files; defaults are merged below.
     }
 
     private static boolean mergeDefaults(ConfigurationSection existing, ConfigurationSection defaults) {

@@ -16,3 +16,7 @@ messages:
     faces_too_low: "{prefix}Number of faces (M) must be >= 2."
     limits_exceeded: "{prefix}Requested {notation} exceeds limits (max_dice={max_dice}, max_faces={max_faces})."
     result: "{prefix}{player} rolled {notation}: {results} (total {total})"
+  update:
+    up_to_date_console: "{prefix}You are running the latest version: {current}."
+    available_console: "{prefix}A new version is available: {latest} (current: {current}). Download: {url}"
+    available_admin: "{prefix}New version available: {latest} (current: {current})"
