@@ -2,9 +2,11 @@
 package me.sepehrhn.pocketdice.commands;
 
 import me.sepehrhn.pocketdice.PocketDice;
+import me.sepehrhn.pocketdice.config.ConfigUpdater;
 import me.sepehrhn.pocketdice.util.Text;
 import org.bukkit.command.*;
 
+import java.io.IOException;
 import java.util.List;
 
 public class PocketDiceAdminCommand implements CommandExecutor, TabCompleter {
@@ -23,8 +25,14 @@ public class PocketDiceAdminCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
-            plugin.reloadConfig();
-            Text.sendError(plugin, sender, "Config reloaded.");
+            try {
+                ConfigUpdater.updateConfig(plugin);
+                plugin.reloadConfig();
+                Text.sendError(plugin, sender, "Config reloaded and updated.");
+            } catch (IOException | IllegalStateException e) {
+                plugin.getLogger().severe("Failed to update config.yml on reload: " + e.getMessage());
+                Text.sendError(plugin, sender, "Failed to update config.yml. Check console for details.");
+            }
             return true;
         }
 

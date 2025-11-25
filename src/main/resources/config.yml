@@ -1,4 +1,6 @@
-# File: D:\PocketDice\src\main\resources\config.yml
+# Do not change this value manually.
+# It is used by PocketDice to automatically update this file between versions.
+config-version: 1
 radius: 16
 default_notation: "1d100"
 max_dice: 50

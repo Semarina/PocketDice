@@ -3,14 +3,22 @@ package me.sepehrhn.pocketdice;
 
 import me.sepehrhn.pocketdice.commands.PocketDiceAdminCommand;
 import me.sepehrhn.pocketdice.commands.RollCommand;
+import me.sepehrhn.pocketdice.config.ConfigUpdater;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.IOException;
 
 public class PocketDice extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Create default config.yml on first run
         saveDefaultConfig();
+        try {
+            ConfigUpdater.updateConfig(this);
+        } catch (IOException | IllegalStateException e) {
+            getLogger().severe("Failed to update config.yml: " + e.getMessage());
+        }
+        reloadConfig();
 
         // /roll command
         var roll = getCommand("roll");
