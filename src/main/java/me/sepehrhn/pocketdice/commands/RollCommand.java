@@ -7,6 +7,8 @@ import me.sepehrhn.pocketdice.util.Text;
 import org.bukkit.Location;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.NamespacedKey;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +36,9 @@ public class RollCommand implements CommandExecutor, TabCompleter {
 
         final var cfg = plugin.getConfig();
         final String defaultNotation = cfg.getString("default_notation", "1d100");
-        final boolean allowShorthand = cfg.getBoolean("allow_shorthand_d", true);
+        final boolean allowShorthand = cfg.contains("allow_shorthand")
+                ? cfg.getBoolean("allow_shorthand", true)
+                : cfg.getBoolean("allow_shorthand_d", true);
         final int maxDice = cfg.getInt("max_dice", 50);
         final int maxFaces = cfg.getInt("max_faces", 1000);
         final int radius = cfg.getInt("radius", 16);
@@ -94,6 +98,8 @@ public class RollCommand implements CommandExecutor, TabCompleter {
             }
         }
 
+        playRollSound(player);
+
         return true;
     }
 
@@ -117,5 +123,39 @@ public class RollCommand implements CommandExecutor, TabCompleter {
 
         Map<String, String> placeholders = Map.of("or_d", ex.isShorthandAllowed() ? " or d8" : "");
         Text.sendLocale(plugin, sender, key, placeholders);
+    }
+
+    private String lastInvalidSoundKey = null;
+
+    private void playRollSound(Player player) {
+        ConfigurationSection soundCfg = plugin.getConfig().getConfigurationSection("sounds.roll");
+        if (soundCfg == null || !soundCfg.getBoolean("enabled", true)) return;
+
+        String soundKey = soundCfg.getString("sound_key", "minecraft:block.amethyst_block.chime");
+        float volume = (float) soundCfg.getDouble("volume", 0.7D);
+        float pitch = (float) soundCfg.getDouble("pitch", 1.2D);
+
+        if (soundKey == null || soundKey.isBlank()) {
+            warnInvalidSound("(empty)", "sound key missing");
+            return;
+        }
+
+        NamespacedKey key = NamespacedKey.fromString(soundKey);
+        if (key == null) {
+            warnInvalidSound(soundKey, "invalid namespaced key");
+            return;
+        }
+
+        try {
+            player.playSound(player.getLocation(), soundKey, volume, pitch);
+        } catch (Exception ex) {
+            warnInvalidSound(soundKey, ex.getMessage());
+        }
+    }
+
+    private void warnInvalidSound(String soundKey, String reason) {
+        if (soundKey.equals(lastInvalidSoundKey)) return;
+        lastInvalidSoundKey = soundKey;
+        plugin.getLogger().warning("[PocketDice] Invalid roll sound '" + soundKey + "': " + reason + ". Sound disabled for this session.");
     }
 }

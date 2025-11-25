@@ -25,6 +25,7 @@ public class UpdateChecker {
     private static final String MODRINTH_API_BASE = "https://api.modrinth.com/v2/project/";
     private static final String MODRINTH_PROJECT_PAGE = "https://modrinth.com/plugin/";
     private static final long MIN_DELAY_TICKS = 20L; // 1 second
+    private static final String UPDATE_NOTIFY_PERMISSION = "pocketdice.update.notify";
 
     private final PocketDice plugin;
     private final HttpClient httpClient;
@@ -58,7 +59,7 @@ public class UpdateChecker {
             checkIntervalTicks = -1;
             notifyConsole = false;
             notifyAdminsOnJoin = false;
-            adminNotifyPermission = "pocketdice.update.notify";
+            adminNotifyPermission = UPDATE_NOTIFY_PERMISSION;
             lastResult = null;
             return;
         }
@@ -75,7 +76,7 @@ public class UpdateChecker {
         }
         notifyConsole = updates.getBoolean("notify_console", true);
         notifyAdminsOnJoin = updates.getBoolean("notify_admins_on_join", true);
-        adminNotifyPermission = updates.getString("admin_notify_permission", "pocketdice.update.notify");
+        adminNotifyPermission = UPDATE_NOTIFY_PERMISSION;
 
         lastResult = null;
     }
@@ -233,7 +234,7 @@ public class UpdateChecker {
     public String getAdminNotifyPermission() {
         return adminNotifyPermission != null && !adminNotifyPermission.isBlank()
                 ? adminNotifyPermission
-                : "pocketdice.update.notify";
+                : UPDATE_NOTIFY_PERMISSION;
     }
 
     public String getProjectSlug() {

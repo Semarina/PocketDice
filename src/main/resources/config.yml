@@ -1,11 +1,11 @@
 # Do not change this value manually.
 # It is used by PocketDice to automatically update this file between versions.
-config-version: 3
+config-version: 4
 radius: 16
 default_notation: "1d100"
 max_dice: 50
 max_faces: 1000
-allow_shorthand_d: true
+allow_shorthand: true
 
 # Optional Modrinth update checks for PocketDice.
 # Set enabled to false to disable HTTP calls entirely.
@@ -16,4 +16,11 @@ updates:
   check_interval_hours: 24             # 0 or negative = startup-only
   notify_console: true
   notify_admins_on_join: true
-  admin_notify_permission: "pocketdice.update.notify"
+
+# Optional roll sound effect for the roller.
+sounds:
+  roll:
+    enabled: true
+    sound_key: "minecraft:block.amethyst_block.chime"
+    volume: 0.7
+    pitch: 1.2

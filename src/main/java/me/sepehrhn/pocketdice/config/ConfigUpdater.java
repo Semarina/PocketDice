@@ -79,6 +79,7 @@ public final class ConfigUpdater {
                 case 1 -> migrateToV1(config);
                 case 2 -> migrateToV2(config);
                 case 3 -> migrateToV3(config);
+                case 4 -> migrateToV4(config);
                 default -> {
                 }
             }
@@ -97,6 +98,17 @@ public final class ConfigUpdater {
 
     private static void migrateToV3(YamlConfiguration config) {
         // Version 3 moves user-facing strings to locale files; defaults are merged below.
+    }
+
+    private static void migrateToV4(YamlConfiguration config) {
+        // Rename allow_shorthand_d to allow_shorthand if present
+        if (!config.contains("allow_shorthand") && config.contains("allow_shorthand_d")) {
+            config.set("allow_shorthand", config.get("allow_shorthand_d"));
+        }
+        config.set("allow_shorthand_d", null);
+
+        // Remove obsolete admin_notify_permission customization
+        config.set("updates.admin_notify_permission", null);
     }
 
     private static boolean mergeDefaults(ConfigurationSection existing, ConfigurationSection defaults) {
