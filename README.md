@@ -9,6 +9,7 @@ Lightweight proximity dice rolls for **Paper/Folia** and **Fabric** (1.21.x).
 - Announces proximity results only to players in the same world within `radius` blocks.
 - **Anti-Spam Guard**: Configurable per-player cooldowns and sliding-window rate limits.
 - **Multi-Platform**: Native support for Paper/Purpur/Folia and Fabric.
+- **Fabric/Quilt**: The Fabric build is fully compatible with **Quilt** loader.
 - **Localization**: Automatically picks the player's language if a translation exists.
 
 ## Commands & Permissions
