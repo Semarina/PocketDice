@@ -1,0 +1,59 @@
+plugins {
+    id "fabric-loom" version "1.13-SNAPSHOT"
+    id "io.github.goooler.shadow"
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:1.21.11"
+    mappings "net.fabricmc:yarn:1.21.11+build.1:v2"
+    modImplementation "net.fabricmc:fabric-loader:0.18.2"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:0.140.0+1.21.11"
+    
+    // Adventure for Fabric
+    implementation "net.kyori:adventure-text-minimessage:4.17.0"
+    include "net.kyori:adventure-text-minimessage:4.17.0"
+    implementation "net.kyori:adventure-text-serializer-gson:4.17.0"
+    include "net.kyori:adventure-text-serializer-gson:4.17.0"
+    // Also include API as it is transitive but needed
+    implementation "net.kyori:adventure-api:4.17.0"
+    include "net.kyori:adventure-api:4.17.0"
+    // Adventure Key (transitive, needed)
+    implementation "net.kyori:adventure-key:4.17.0"
+    include "net.kyori:adventure-key:4.17.0"
+    // Include transitive examination dependencies explicitly
+    implementation "net.kyori:examination-api:1.3.0"
+    include "net.kyori:examination-api:1.3.0"
+    implementation "net.kyori:examination-string:1.3.0"
+    include "net.kyori:examination-string:1.3.0"
+    // Adventure JSON Serializer (transitive of Gson, needed)
+    implementation "net.kyori:adventure-text-serializer-json:4.17.0"
+    include "net.kyori:adventure-text-serializer-json:4.17.0"
+    // Adventure Option (transitive of JSON, needed)
+    implementation "net.kyori:option:1.0.0"
+    include "net.kyori:option:1.0.0"
+
+    // YAML configuration library
+    implementation "org.yaml:snakeyaml:2.2"
+    include "org.yaml:snakeyaml:2.2"
+
+    implementation project(":core")
+    shadow project(":core")
+}
+
+tasks.withType(net.fabricmc.loom.task.RemapJarTask).configureEach {
+    archiveFileName.set("PocketDice-${project.version}-Fabric.jar")
+}
+
+shadowJar {
+    configurations = [project.configurations.shadow]
+    archiveClassifier.set("dev-shadow")
+    from sourceSets.main.output
+}
+
+remapJar {
+    inputFile.set(shadowJar.archiveFile)
+    dependsOn shadowJar
+    archiveClassifier.set("")
+}
+
+

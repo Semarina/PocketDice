@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "pocketdice",
+  "version": "0.2.0",
+  "name": "PocketDice",
+  "description": "Lightweight proximity dice rolls",
+  "authors": [
+    "Me"
+  ],
+  "contact": {
+    "homepage": "https://github.com/SepehrHN/PocketDice",
+    "sources": "https://github.com/SepehrHN/PocketDice"
+  },
+  "license": "MIT",
+  "icon": "assets/pocketdice/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "me.sepehrhn.pocketdice.fabric.PocketDiceFabric"
+    ]
+  },
+  "mixins": [
+  ],
+  "depends": {
+    "fabricloader": ">=0.15.11",
+    "minecraft": ">=1.21 <=1.21.11",
+    "java": ">=21",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}

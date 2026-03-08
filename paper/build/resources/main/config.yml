@@ -1,0 +1,79 @@
+###########################
+#       PocketDice        #
+###########################
+
+config-version: 6
+
+# Developed and maintained by Semarina.
+
+###########################
+#         General         #
+###########################
+
+# The maximum radius in blocks that dice rolls can be seen/heard by other players.
+radius: 16
+
+# The default dice notation (e.g. 1d100, 2d6) used when rolling without arguments.
+default_notation: "1d100"
+
+# Allow players to use shorthand 'd' prefixes for simple faces (e.g. 'd20' instead of '1d20').
+allow_shorthand: true
+
+# Hard limit for the maximum number of dice a player can roll at once to prevent server lag.
+max_dice: 50
+
+# Hard limit for the maximum number of faces on a single die.
+max_faces: 1000
+
+# Diagnostic switch printing robust execution markers natively to Console when enabled
+debug: false
+
+###########################
+#         Sounds          #
+###########################
+
+# Optional sound effect played to players in the radius when a roll occurs.
+sounds:
+  roll:
+    enabled: true
+    # See here: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html
+    sound_key: "minecraft:block.stem.step"
+    volume: 0.7
+    pitch: 1.2
+
+###########################
+#         Updates         #
+###########################
+
+# Optional Modrinth update checks for PocketDice.
+# Set enabled to false to disable HTTP calls entirely.
+updates:
+  enabled: true
+  check_on_startup: true
+  # Interval in hours to check for new updates (0 or negative = startup-only)
+  check_interval_hours: 24
+  notify_console: true
+  # Notifies administrators (OPs) when they log into the server
+  notify_admins_on_join: true
+
+###########################
+#       Anti-Spam         #
+###########################
+
+# Cooldown between rolls per player.
+cooldowns:
+  enabled: true
+  # Minimum seconds between rolls per player.
+  seconds: 3
+  # Permission to bypass the cooldown entirely.
+  bypass_permission: "pocketdice.cooldown.bypass"
+
+# Rate limit: max rolls within a sliding time window.
+rate_limit:
+  enabled: true
+  # Time window in seconds.
+  window_seconds: 60
+  # Maximum rolls per player within the window.
+  max_rolls: 12
+  # Permission to bypass the rate limit entirely.
+  bypass_permission: "pocketdice.ratelimit.bypass"

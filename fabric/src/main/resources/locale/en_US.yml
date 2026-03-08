@@ -1,0 +1,27 @@
+messages:
+  prefix: "<aqua>[PocketDice]</aqua> "
+  command:
+    player_only: "{prefix}<gray>Only players can use this command.</gray>"
+    no_permission: "{prefix}<red>You don't have permission to do that.</red>"
+    usage_roll: "{prefix}<gray>Usage:</gray> <yellow>/roll &lt;notation&gt;</yellow>"
+    reload_usage: "{prefix}<gray>Usage:</gray> <yellow>/pocketdice reload</yellow>"
+    reload_success: "{prefix}<green>Config and locales reloaded.</green>"
+    reload_failure: "{prefix}<red>Failed to update config.yml. Check console for details.</red>"
+    pocketdice_help: "{prefix}<yellow>PocketDice Commands:</yellow><newline><gray> - </gray><aqua>/pd reload</aqua><gray> : Reloads config and locales.</gray><newline><gray> - </gray><aqua>/pd version</aqua><gray> : Displays current version.</gray>"
+    pocketdice_version: "{prefix}<gray>Running PocketDice version </gray><green>{version}</green>"
+    roll_help: "{prefix}<yellow>Rolling Dice:</yellow><newline><gray>Use format NdM (e.g. 2d6). Leave blank for 1d100.</gray><newline><gray> - </gray><aqua>/roll 2d20</aqua><gray> : Rolls two 20-sided dice.</gray>"
+  roll:
+    missing_notation: "{prefix}<yellow>Please provide a notation like 1d6 or d8.</yellow>"
+    invalid_notation: "{prefix}<yellow>Invalid notation. Use NdM like 2d6{or_d}.</yellow>"
+    dice_nan: "{prefix}<red>Number of dice (N) must be a number.</red>"
+    faces_nan: "{prefix}<red>Number of faces (M) must be a number.</red>"
+    dice_too_low: "{prefix}<red>Number of dice (N) must be >= 1.</red>"
+    faces_too_low: "{prefix}<red>Number of faces (M) must be >= 2.</red>"
+    limits_exceeded: "{prefix}<red>Requested {notation} exceeds limits (max_dice={max_dice}, max_faces={max_faces}).</red>"
+    result: "{prefix}<gray>{player}</gray> <yellow>rolled</yellow> <gold>{notation}</gold><gray>:</gray> <aqua>{results}</aqua> <gray>(total</gray> <green>{total}</green><gray>)</gray>"
+    cooldown_active: "{prefix}<red>Please wait {remaining}s before rolling again.</red>"
+    rate_limited: "{prefix}<red>Too many rolls! Try again in {remaining}s.</red>"
+  update:
+    up_to_date_console: "{prefix}You are running the latest version: {current}."
+    available_console: "{prefix}A new version is available: {latest} (current: {current}). Download: {url}"
+    available_admin: "{prefix}<yellow>New version available:</yellow> <gold>{latest}</gold> <gray>(current:</gray> <gold>{current}</gold><gray>)</gray>"

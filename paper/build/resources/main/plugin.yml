@@ -1,0 +1,53 @@
+# File: src\main\resources\plugin.yml
+name: PocketDice
+main: me.sepehrhn.pocketdice.PocketDice
+version: 0.2.0
+api-version: "1.21"
+author: "SepehrHN"
+description: "Roll dice and announce to nearby players."
+folia-supported: true
+
+commands:
+  roll:
+    description: "Roll dice with NdM (e.g., 2d6). No args = 1d100."
+    usage: "/roll [NdM]"
+    aliases: [dice]
+    permission: pocketdice.roll
+  groll:
+    description: "Roll dice globally with NdM (e.g., 2d6)."
+    usage: "/groll [NdM]"
+    aliases: [gdice]
+    permission: pocketdice.groll
+  proll:
+    description: "Roll dice privately with NdM (e.g., 2d6)."
+    usage: "/proll [NdM]"
+    aliases: [pdice]
+    permission: pocketdice.proll
+  pocketdice:
+    description: "PocketDice admin commands."
+    usage: "/pocketdice reload"
+    aliases: [pd]
+    permission: pocketdice.reload
+
+permissions:
+  pocketdice.roll:
+    description: "Allows using /roll"
+    default: true
+  pocketdice.groll:
+    description: "Allows using /groll"
+    default: true
+  pocketdice.proll:
+    description: "Allows using /proll"
+    default: true
+  pocketdice.reload:
+    description: "Allows /pocketdice reload"
+    default: op
+  pocketdice.update.notify:
+    description: "Receive PocketDice update notifications when a new version is available."
+    default: op
+  pocketdice.cooldown.bypass:
+    description: "Bypass the /roll cooldown."
+    default: op
+  pocketdice.ratelimit.bypass:
+    description: "Bypass the /roll rate limit."
+    default: op

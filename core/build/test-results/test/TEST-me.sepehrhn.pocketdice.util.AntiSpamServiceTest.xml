@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="me.sepehrhn.pocketdice.util.AntiSpamServiceTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-03-08T10:24:15.219Z" hostname="JARVIX" time="2.247">
+  <properties/>
+  <testcase name="cooldownBlocksImmediateSecondRoll()" classname="me.sepehrhn.pocketdice.util.AntiSpamServiceTest" time="0.015"/>
+  <testcase name="rateLimitAllowsAfterWindowExpiry()" classname="me.sepehrhn.pocketdice.util.AntiSpamServiceTest" time="1.106"/>
+  <testcase name="cooldownAllowsFirstRoll()" classname="me.sepehrhn.pocketdice.util.AntiSpamServiceTest" time="0.0"/>
+  <testcase name="rateLimitAllowsWhenDisabled()" classname="me.sepehrhn.pocketdice.util.AntiSpamServiceTest" time="0.0"/>
+  <testcase name="cooldownAllowsAfterExpiry()" classname="me.sepehrhn.pocketdice.util.AntiSpamServiceTest" time="1.114"/>
+  <testcase name="cooldownAllowsWhenDisabled()" classname="me.sepehrhn.pocketdice.util.AntiSpamServiceTest" time="0.001"/>
+  <testcase name="clearPlayerResetsState()" classname="me.sepehrhn.pocketdice.util.AntiSpamServiceTest" time="0.001"/>
+  <testcase name="rateLimitAllowsFirstRolls()" classname="me.sepehrhn.pocketdice.util.AntiSpamServiceTest" time="0.003"/>
+  <testcase name="rateLimitBlocksAfterMaxRolls()" classname="me.sepehrhn.pocketdice.util.AntiSpamServiceTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

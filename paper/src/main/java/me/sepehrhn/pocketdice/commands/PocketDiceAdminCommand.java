@@ -1,0 +1,61 @@
+// File: D:\PocketDice\src\main\java\me\sepehrhn\pocketdice\commands\PocketDiceAdminCommand.java
+package me.sepehrhn.pocketdice.commands;
+
+import me.sepehrhn.pocketdice.PocketDice;
+import me.sepehrhn.pocketdice.config.ConfigUpdater;
+import me.sepehrhn.pocketdice.util.Text;
+import org.bukkit.command.*;
+
+import java.io.IOException;
+import java.util.List;
+
+public class PocketDiceAdminCommand implements CommandExecutor, TabCompleter {
+
+    private final PocketDice plugin;
+
+    public PocketDiceAdminCommand(PocketDice plugin) {
+        this.plugin = plugin;
+    }
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if (!sender.hasPermission("pocketdice.reload")) {
+            Text.sendLocale(plugin, sender, "messages.command.no_permission");
+            return true;
+        }
+
+        if (args.length == 0 || args[0].equalsIgnoreCase("help")) {
+            Text.sendLocale(plugin, sender, "messages.command.pocketdice_help");
+            return true;
+        }
+
+        if (args[0].equalsIgnoreCase("version")) {
+            java.util.Map<String, String> map = java.util.Map.of("version", plugin.getDescription().getVersion());
+            Text.sendLocale(plugin, sender, "messages.command.pocketdice_version", map);
+            return true;
+        }
+
+        if (args[0].equalsIgnoreCase("reload")) {
+            try {
+                ConfigUpdater.updateConfig(plugin);
+                plugin.reloadConfig();
+                plugin.getLocaleManager().reload();
+                plugin.restartUpdateChecker();
+                Text.sendLocale(plugin, sender, "messages.command.reload_success");
+            } catch (IOException | IllegalStateException e) {
+                plugin.getLogger().severe("Failed to update config.yml on reload: " + e.getMessage());
+                Text.sendLocale(plugin, sender, "messages.command.reload_failure");
+            }
+            return true;
+        }
+
+        Text.sendLocale(plugin, sender, "messages.command.reload_usage");
+        return true;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+        if (args.length == 1) return List.of("reload");
+        return List.of();
+    }
+}
