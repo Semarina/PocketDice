@@ -15,7 +15,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundCategory;
 import com.google.gson.JsonParser;
@@ -173,7 +173,7 @@ public class FabricRollCommand {
         // --- Sound Logic ---
         if (FabricConfig.DATA.sounds.roll.enabled) {
             String soundId = FabricConfig.DATA.sounds.roll.sound_key;
-            Identifier id = Identifier.tryParse(soundId);
+            ResourceLocation id = ResourceLocation.tryParse(soundId);
             if (id != null) {
                 var optionalSound = Registries.SOUND_EVENT.getOptional(RegistryKey.of(RegistryKeys.SOUND_EVENT, id));
                 if (optionalSound.isPresent()) {
