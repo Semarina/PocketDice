@@ -1,6 +1,6 @@
 # PocketDice
 
-Lightweight proximity dice rolls for **Paper/Folia** and **Fabric** (1.21.x).
+Lightweight proximity dice rolls for **Paper/Purpur/Folia** and **Fabric/Quilt** (26.1.x).
 
 ## What it does
 - `/roll [NdM]` - roll N dice with M faces. Examples: `/roll` (default `1d100`), `/roll 1d6`, `/roll 2d20`, `/roll d8`.
@@ -29,8 +29,31 @@ Lightweight proximity dice rolls for **Paper/Folia** and **Fabric** (1.21.x).
 
 ## Compatibility
 
-- **Minecraft:** 1.21.x (Paper/Folia/Fabric)
-- **Java:** 21+
+| Platform | Minecraft Version | Status |
+|---|---|---|
+| Paper | 26.1.x | Supported |
+| Purpur | 26.1.x | Supported |
+| Folia | 26.1.x | Supported |
+| Fabric | 26.1.x | Supported |
+| Quilt | 26.1.x | Supported |
+| Spigot/Bukkit | - | Not supported |
+
+Java 25 or newer is required.
+
+## Installation
+
+### Paper/Purpur/Folia
+
+1. Download `PocketDice-0.4.0-Paper.jar` from [Modrinth](https://modrinth.com/plugin/pocketdice).
+2. Place it in your server's `plugins/` folder.
+3. Restart the server.
+
+### Fabric/Quilt
+
+1. Install [Fabric Loader](https://fabricmc.net/) and [Fabric API](https://modrinth.com/mod/fabric-api).
+2. Download `PocketDice-0.4.0-Fabric.jar` from [Modrinth](https://modrinth.com/plugin/pocketdice).
+3. Place it in your `mods/` folder.
+4. Launch the server or world.
 
 ## Config (`config.yml` or `pocketdice.yml`)
 
@@ -72,3 +95,16 @@ updates:
 ## Update Checking
 - Uses the Modrinth API to check for updates.
 - Can be disabled entirely via `updates.enabled: false`.
+
+## Building
+
+PocketDice uses Gradle. To build both release jars:
+
+```powershell
+.\gradlew.bat build
+```
+
+The release jars are copied to `build/libs/`:
+
+- `PocketDice-0.4.0-Paper.jar` - For Paper/Purpur/Folia.
+- `PocketDice-0.4.0-Fabric.jar` - For Fabric/Quilt.

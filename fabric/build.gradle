@@ -1,61 +1,66 @@
 plugins {
-    id "net.fabricmc.fabric-loom" version "1.15-SNAPSHOT"
+    id "net.fabricmc.fabric-loom" version "${loom_version}"
     id "io.github.goooler.shadow"
 }
 
 dependencies {
-    minecraft "com.mojang:minecraft:26.1.1"
-    mappings "net.fabricmc:yarn:26.1.1+build.1:v2"
-    modImplementation "net.fabricmc:fabric-loader:0.18.2"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:0.144.3+26.1"
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    // 26.1 Loom can publish a resource-only merged jar; compile against the generated class jars.
+    def minecraftCache = new File(gradle.gradleUserHomeDir, "caches/fabric-loom/${project.minecraft_version}")
+    compileOnly files(
+        new File(minecraftCache, "minecraft-client.jar"),
+        new File(minecraftCache, "minecraft-extracted_server.jar")
+    )
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
     
     // Adventure for Fabric
     implementation "net.kyori:adventure-text-minimessage:4.17.0"
-    include "net.kyori:adventure-text-minimessage:4.17.0"
+    shadow "net.kyori:adventure-text-minimessage:4.17.0"
     implementation "net.kyori:adventure-text-serializer-gson:4.17.0"
-    include "net.kyori:adventure-text-serializer-gson:4.17.0"
+    shadow "net.kyori:adventure-text-serializer-gson:4.17.0"
     // Also include API as it is transitive but needed
     implementation "net.kyori:adventure-api:4.17.0"
-    include "net.kyori:adventure-api:4.17.0"
+    shadow "net.kyori:adventure-api:4.17.0"
     // Adventure Key (transitive, needed)
     implementation "net.kyori:adventure-key:4.17.0"
-    include "net.kyori:adventure-key:4.17.0"
+    shadow "net.kyori:adventure-key:4.17.0"
     // Include transitive examination dependencies explicitly
     implementation "net.kyori:examination-api:1.3.0"
-    include "net.kyori:examination-api:1.3.0"
+    shadow "net.kyori:examination-api:1.3.0"
     implementation "net.kyori:examination-string:1.3.0"
-    include "net.kyori:examination-string:1.3.0"
+    shadow "net.kyori:examination-string:1.3.0"
     // Adventure JSON Serializer (transitive of Gson, needed)
     implementation "net.kyori:adventure-text-serializer-json:4.17.0"
-    include "net.kyori:adventure-text-serializer-json:4.17.0"
+    shadow "net.kyori:adventure-text-serializer-json:4.17.0"
     // Adventure Option (transitive of JSON, needed)
     implementation "net.kyori:option:1.0.0"
-    include "net.kyori:option:1.0.0"
+    shadow "net.kyori:option:1.0.0"
 
     // YAML configuration library
     implementation "org.yaml:snakeyaml:2.2"
-    include "org.yaml:snakeyaml:2.2"
+    shadow "org.yaml:snakeyaml:2.2"
 
     implementation project(":core")
     shadow project(":core")
 }
 
-tasks.withType(net.fabricmc.loom.task.RemapJarTask).configureEach {
-    archiveFileName.set("PocketDice-${project.version}-Fabric.jar")
+base {
+    archivesName = "PocketDice-${project.version}-Fabric"
+}
+
+tasks.withType(Jar).configureEach {
+    archiveVersion.set("")
 }
 
 shadowJar {
     configurations = [project.configurations.shadow]
-    archiveClassifier.set("dev-shadow")
+    archiveClassifier.set("")
+    archiveFileName.set("PocketDice-${project.version}-Fabric.jar")
     from sourceSets.main.output
 }
 
-remapJar {
-    inputFile.set(shadowJar.archiveFile)
-    dependsOn shadowJar
-    archiveClassifier.set("")
-}
-
+assemble.dependsOn shadowJar
 
 tasks.withType(JavaCompile).configureEach {
     options.release.set(25)

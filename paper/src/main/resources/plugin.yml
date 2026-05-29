@@ -1,10 +1,10 @@
 # File: src\main\resources\plugin.yml
 name: PocketDice
 main: me.sepehrhn.pocketdice.PocketDice
-version: 0.3.0
-api-version: "1.21"
+version: 0.4.0
+api-version: "26.1"
 author: "SepehrHN"
-description: "Roll dice and announce to nearby players."
+description: "Roll dice and announce to nearby players on Paper, Purpur, and Folia 26.1.x."
 folia-supported: true
 
 commands:

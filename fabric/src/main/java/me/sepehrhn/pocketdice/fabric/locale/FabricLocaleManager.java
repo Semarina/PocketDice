@@ -158,23 +158,23 @@ public class FabricLocaleManager {
         return message;
     }
 
-    public static net.minecraft.text.Text getText(net.minecraft.registry.RegistryWrapper.WrapperLookup registryManager, String localeCode, String path, Map<String, String> placeholders) {
+    public static net.minecraft.network.chat.Component getText(net.minecraft.core.HolderLookup.Provider registryManager, String localeCode, String path, Map<String, String> placeholders) {
         String msg = get(localeCode, path, placeholders);
-        if (msg.equals(path)) return net.minecraft.text.Text.literal(msg);
+        if (msg.equals(path)) return net.minecraft.network.chat.Component.literal(msg);
 
         try {
             net.kyori.adventure.text.Component comp = net.kyori.adventure.text.minimessage.MiniMessage.miniMessage().deserialize(msg);
             String json = net.kyori.adventure.text.serializer.gson.GsonComponentSerializer.gson().serialize(comp);
-            return net.minecraft.text.TextCodecs.CODEC.parse(registryManager.getOps(com.mojang.serialization.JsonOps.INSTANCE), com.google.gson.JsonParser.parseString(json))
+            return net.minecraft.network.chat.ComponentSerialization.CODEC.parse(registryManager.createSerializationContext(com.mojang.serialization.JsonOps.INSTANCE), com.google.gson.JsonParser.parseString(json))
                     .result()
-                    .orElse(net.minecraft.text.Text.literal(msg));
+                    .orElse(net.minecraft.network.chat.Component.literal(msg));
         } catch (Exception e) {
             // Fallback to literal if MiniMessage fails
-            return net.minecraft.text.Text.literal(msg);
+            return net.minecraft.network.chat.Component.literal(msg);
         }
     }
 
-    public static net.minecraft.text.Text getText(net.minecraft.registry.RegistryWrapper.WrapperLookup registryManager, String localeCode, String path) {
+    public static net.minecraft.network.chat.Component getText(net.minecraft.core.HolderLookup.Provider registryManager, String localeCode, String path) {
         return getText(registryManager, localeCode, path, Collections.emptyMap());
     }
 }

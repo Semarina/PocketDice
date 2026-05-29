@@ -1,10 +1,15 @@
 
-```gitignore
-# File: .gitignore
 # Maven
 /target/
 !.mvn/wrapper/maven-wrapper.jar
 .mvn/timing.properties
+
+# Gradle
+.gradle/
+**/build/
+build*.txt
+build*.log
+*.log
 
 # IDEs
 *.iml
