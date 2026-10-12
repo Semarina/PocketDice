@@ -22,10 +22,15 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Build with Gradle
-        run: .\gradlew.bat build
+        run: |
+          .\gradlew.bat build '-Prelease_target=26.2' "-Dorg.gradle.java.home=$env:JAVA_HOME"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          .\gradlew.bat build "-Dorg.gradle.java.home=$env:JAVA_HOME"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: PocketDice-jars
-          path: build/libs/PocketDice-*.jar
+          path: |
+            build/libs/PocketDice-0.5.0-*.jar
+            build/libs/PocketDice-0.6.0-*.jar

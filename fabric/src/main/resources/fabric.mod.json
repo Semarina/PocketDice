@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "pocketdice",
-  "version": "0.4.0",
+  "version": "${version}",
   "name": "PocketDice",
   "description": "Lightweight proximity dice rolls",
   "authors": [
@@ -22,8 +22,8 @@
   "mixins": [
   ],
   "depends": {
-    "fabricloader": ">=0.19.2",
-    "minecraft": ">=26.1 <=26.1.2",
+    "fabricloader": ">=${loader_version}",
+    "minecraft": "${minecraft_range}",
     "java": ">=25",
     "fabric-api": "*"
   },

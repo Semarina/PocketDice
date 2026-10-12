@@ -2,7 +2,7 @@
 #       PocketDice        #
 ###########################
 
-config-version: 6
+config-version: 7
 
 # Developed and maintained by Semarina.
 
@@ -15,9 +15,6 @@ radius: 16
 
 # The default dice notation (e.g. 1d100, 2d6) used when rolling without arguments.
 default_notation: "1d100"
-
-# Allow players to use shorthand 'd' prefixes for simple faces (e.g. 'd20' instead of '1d20').
-allow_shorthand: true
 
 # Hard limit for the maximum number of dice a player can roll at once to prevent server lag.
 max_dice: 50

@@ -3,9 +3,21 @@ plugins {
     id 'io.github.goooler.shadow' version '8.1.8' apply false
 }
 
+def releaseProfiles = [
+    '26.2': [version: '0.5.0', minecraftVersion: '26.2', minecraftRange: '>=26.2 <26.3',
+             fabricApi: '0.154.0+26.2', paperApi: '26.2.build.48-alpha'],
+    '26.3': [version: mod_version, minecraftVersion: minecraft_version, minecraftRange: '>=26.3 <26.4',
+             fabricApi: fabric_version, paperApi: paper_api_version]
+]
+def releaseTarget = findProperty('release_target') ?: minecraft_version
+if (!releaseProfiles.containsKey(releaseTarget)) {
+    throw new GradleException("Unsupported release_target '${releaseTarget}'; use 26.2 or 26.3.")
+}
+ext.releaseProfile = releaseProfiles[releaseTarget]
+
 subprojects {
     group = 'me.sepehrhn'
-    version = findProperty('mod_version') ?: '0.4.0'
+    version = rootProject.releaseProfile.version
 
     repositories {
         mavenCentral()
@@ -34,14 +46,10 @@ subprojects {
 tasks.register('copyArtifacts', Copy) {
     dependsOn ':paper:build', ':fabric:build'
     
-    doFirst {
-        delete layout.buildDirectory.dir('libs')
-    }
-
     from project(':paper').layout.buildDirectory.dir('libs')
     from project(':fabric').layout.buildDirectory.dir('libs')
-    include "*-Paper.jar"
-    include "*-Fabric.jar"
+    include "PocketDice-${releaseProfile.version}-Paper.jar"
+    include "PocketDice-${releaseProfile.version}-Fabric.jar"
     into layout.buildDirectory.dir('libs')
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }

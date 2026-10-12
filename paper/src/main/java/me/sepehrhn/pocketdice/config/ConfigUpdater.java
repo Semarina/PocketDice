@@ -68,16 +68,13 @@ public final class ConfigUpdater {
                 case 4 -> migrateToV4(config);
                 case 5 -> migrateToV5(config);
                 case 6 -> migrateToV6(config);
+                case 7 -> migrateToV7(config);
             }
         }
         config.set("config-version", targetVersion);
     }
     
     private static void migrateToV4(YamlConfiguration config) {
-        if (!config.contains("allow_shorthand") && config.contains("allow_shorthand_d")) {
-            config.set("allow_shorthand", config.get("allow_shorthand_d"));
-        }
-        config.set("allow_shorthand_d", null);
         config.set("updates.admin_notify_permission", null);
     }
 
@@ -87,5 +84,10 @@ public final class ConfigUpdater {
 
     private static void migrateToV6(YamlConfiguration config) {
         // Version 6 adds cooldowns and rate_limit, handled by copyDefaults.
+    }
+
+    private static void migrateToV7(YamlConfiguration config) {
+        config.set("allow_shorthand", null);
+        config.set("allow_shorthand_d", null);
     }
 }

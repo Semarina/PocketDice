@@ -18,8 +18,8 @@ body:
   - type: dropdown
     id: server
     attributes:
-      label: Server type
-      options: [Paper 1.21.x, Purpur 1.21.x]
+      label: Platform
+      options: [Paper 26.3, Purpur 26.3, Folia 26.3, Fabric 26.3, Quilt 26.3, Paper 26.2, Purpur 26.2, Folia 26.2, Fabric 26.2, Quilt 26.2]
   - type: textarea
     id: logs
     attributes:

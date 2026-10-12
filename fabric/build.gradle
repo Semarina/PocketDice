@@ -4,15 +4,15 @@ plugins {
 }
 
 dependencies {
-    minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    // 26.1 Loom can publish a resource-only merged jar; compile against the generated class jars.
-    def minecraftCache = new File(gradle.gradleUserHomeDir, "caches/fabric-loom/${project.minecraft_version}")
+    minecraft "com.mojang:minecraft:${rootProject.releaseProfile.minecraftVersion}"
+    // Loom can publish a resource-only merged jar; compile against the generated class jars.
+    def minecraftCache = new File(gradle.gradleUserHomeDir, "caches/fabric-loom/${rootProject.releaseProfile.minecraftVersion}")
     compileOnly files(
         new File(minecraftCache, "minecraft-client.jar"),
         new File(minecraftCache, "minecraft-extracted_server.jar")
     )
     implementation "net.fabricmc:fabric-loader:${project.loader_version}"
-    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${rootProject.releaseProfile.fabricApi}"
     
     // Adventure for Fabric
     implementation "net.kyori:adventure-text-minimessage:4.17.0"
@@ -43,6 +43,15 @@ dependencies {
 
     implementation project(":core")
     shadow project(":core")
+}
+
+processResources {
+    def metadata = [version: project.version, minecraft_range: rootProject.releaseProfile.minecraftRange,
+                    loader_version: project.loader_version]
+    inputs.properties(metadata)
+    filesMatching('fabric.mod.json') {
+        expand(metadata) { escapeBackslash = true }
+    }
 }
 
 base {

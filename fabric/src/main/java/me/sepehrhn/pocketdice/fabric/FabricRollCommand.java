@@ -105,9 +105,9 @@ public class FabricRollCommand {
 
         DiceParser.DiceSpec spec;
         try {
-            spec = DiceParser.parse(notation, FabricConfig.DATA.allow_shorthand);
+            spec = DiceParser.parse(notation);
         } catch (DiceParser.DiceParseException e) {
-            sendError(source, me.sepehrhn.pocketdice.fabric.locale.FabricLocaleManager.getText(source.registryAccess(), localeCode, "messages.roll.invalid_notation"));
+            sendError(source, me.sepehrhn.pocketdice.fabric.locale.FabricLocaleManager.getText(source.registryAccess(), localeCode, "messages.roll.invalid_notation", java.util.Map.of("or_d", " or d8")));
             return 0;
         }
 

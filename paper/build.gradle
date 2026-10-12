@@ -5,8 +5,16 @@ plugins {
 
 dependencies {
     implementation project(":core")
-    compileOnly "io.papermc.paper:paper-api:${project.paper_api_version}"
+    compileOnly "io.papermc.paper:paper-api:${rootProject.releaseProfile.paperApi}"
     shadow project(":core")
+}
+
+processResources {
+    def metadata = [version: project.version, minecraft_version: rootProject.releaseProfile.minecraftVersion]
+    inputs.properties(metadata)
+    filesMatching('plugin.yml') {
+        expand(metadata) { escapeBackslash = true }
+    }
 }
 
 base {

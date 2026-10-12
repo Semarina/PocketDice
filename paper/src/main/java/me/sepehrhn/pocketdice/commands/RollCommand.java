@@ -77,9 +77,6 @@ public class RollCommand implements CommandExecutor, TabCompleter {
             }
         }
         final String defaultNotation = cfg.getString("default_notation", "1d100");
-        final boolean allowShorthand = cfg.contains("allow_shorthand")
-                ? cfg.getBoolean("allow_shorthand", true)
-                : cfg.getBoolean("allow_shorthand_d", true);
         final int maxDice = cfg.getInt("max_dice", 50);
         final int maxFaces = cfg.getInt("max_faces", 1000);
         final int radius = cfg.getInt("radius", 16);
@@ -93,9 +90,9 @@ public class RollCommand implements CommandExecutor, TabCompleter {
 
         final DiceParser.DiceSpec spec;
         try {
-            spec = DiceParser.parse(notation, allowShorthand);
+            spec = DiceParser.parse(notation);
         } catch (DiceParser.DiceParseException ex) {
-            handleParseError(sender, allowShorthand, ex);
+            handleParseError(sender, ex);
             return true;
         }
 
@@ -169,7 +166,7 @@ public class RollCommand implements CommandExecutor, TabCompleter {
         return List.of();
     }
 
-    private void handleParseError(CommandSender sender, boolean allowShorthand, DiceParser.DiceParseException ex) {
+    private void handleParseError(CommandSender sender, DiceParser.DiceParseException ex) {
         String key = switch (ex.getError()) {
             case MISSING_NOTATION -> "messages.roll.missing_notation";
             case INVALID_NOTATION -> "messages.roll.invalid_notation";
@@ -179,8 +176,7 @@ public class RollCommand implements CommandExecutor, TabCompleter {
             case FACES_TOO_LOW -> "messages.roll.faces_too_low";
         };
 
-        Map<String, String> placeholders = Map.of("or_d", ex.isShorthandAllowed() ? " or d8" : "");
-        Text.sendLocale(plugin, sender, key, placeholders);
+        Text.sendLocale(plugin, sender, key, Map.of("or_d", " or d8"));
     }
 
     private String lastInvalidSoundKey = null;

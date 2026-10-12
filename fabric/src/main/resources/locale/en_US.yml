@@ -12,7 +12,7 @@ messages:
     roll_help: "{prefix}<yellow>Rolling Dice:</yellow><newline><gray>Use format NdM (e.g. 2d6). Leave blank for 1d100.</gray><newline><gray> - </gray><aqua>/roll 2d20</aqua><gray> : Rolls two 20-sided dice.</gray>"
   roll:
     missing_notation: "{prefix}<yellow>Please provide a notation like 1d6 or d8.</yellow>"
-    invalid_notation: "{prefix}<yellow>Invalid notation. Use NdM like 2d6{or_d}.</yellow>"
+    invalid_notation: "{prefix}<yellow>Invalid notation. Use NdM like 2d6 or d8.</yellow>"
     dice_nan: "{prefix}<red>Number of dice (N) must be a number.</red>"
     faces_nan: "{prefix}<red>Number of faces (M) must be a number.</red>"
     dice_too_low: "{prefix}<red>Number of dice (N) must be >= 1.</red>"

@@ -1,23 +1,31 @@
-# PocketDice 0.4.0
+# PocketDice 0.6.0 and 0.5.0
 
-PocketDice 0.4.0 updates both release files for Minecraft 26.1.x.
+PocketDice 0.6.0 targets Minecraft 26.3. PocketDice 0.5.0 targets Minecraft 26.2. Both releases provide Fabric/Quilt mods and Paper/Purpur/Folia plugins and require Java 25.
+
+## GitHub Release Changelogs
+
+- [PocketDice v0.5.0](release-notes/0.5.0.md) - Minecraft 26.2.
+- [PocketDice v0.6.0](release-notes/0.6.0.md) - Minecraft 26.3.
+
+These changelogs follow the section format used by the previous GitHub releases.
 
 ## Changes
 
-- Supports Minecraft 26.1, 26.1.1, and 26.1.2.
-- Fabric/Quilt build targets Minecraft 26.1.2 with Fabric Loader 0.19.2 and Fabric API 0.150.0+26.1.2.
-- Paper/Purpur/Folia build compiles against Paper API 26.1.2.build.66-stable.
-- Java 25 is now required.
+- Release 0.6.0 uses Fabric API 0.161.0+26.3 and Paper API 26.3.build.177-stable.
+- Release 0.5.0 uses Fabric API 0.154.0+26.2 and Paper API 26.2.build.48-alpha.
+- Both Fabric builds require Fabric Loader 0.19.5 or newer.
+- Both releases include always-enabled `/roll d8` shorthand and the current configuration migration.
+- Build profiles generate the correct version and Minecraft requirements in each jar.
 
 ## Modrinth Upload
 
-Create two Modrinth versions with the same version number, `0.4.0`:
+Upload each artifact with the matching PocketDice version and Minecraft version:
 
-- `PocketDice-0.4.0-Fabric.jar`
-  - Loaders: Fabric, Quilt
-  - Game versions: 26.1, 26.1.1, 26.1.2
-- `PocketDice-0.4.0-Paper.jar`
-  - Loaders: Folia, Paper, Purpur
-  - Game versions: 26.1, 26.1.1, 26.1.2
+| Artifact | Version number | Game version | Loaders |
+|---|---|---|---|
+| `PocketDice-0.6.0-Fabric.jar` | `0.6.0` | 26.3 | Fabric, Quilt |
+| `PocketDice-0.6.0-Paper.jar` | `0.6.0` | 26.3 | Folia, Paper, Purpur |
+| `PocketDice-0.5.0-Fabric.jar` | `0.5.0` | 26.2 | Fabric, Quilt |
+| `PocketDice-0.5.0-Paper.jar` | `0.5.0` | 26.2 | Folia, Paper, Purpur |
 
 Use release type `Release`.

@@ -159,6 +159,7 @@ public class UpdateChecker {
         for (JsonElement el : versions) {
             if (!el.isJsonObject()) continue;
             JsonObject obj = el.getAsJsonObject();
+            if (!isCompatibleLoaderVersion(obj)) continue;
             String versionNumber = getAsString(obj, "version_number");
             if (versionNumber == null) continue;
             String versionType = getAsString(obj, "version_type");
@@ -190,6 +191,21 @@ public class UpdateChecker {
                 Instant.now(),
                 null
         );
+    }
+
+    private boolean isCompatibleLoaderVersion(JsonObject obj) {
+        JsonArray loaders = obj.getAsJsonArray("loaders");
+        if (loaders == null || loaders.isEmpty()) {
+            return false;
+        }
+        for (JsonElement loader : loaders) {
+            if (!loader.isJsonPrimitive()) continue;
+            String value = loader.getAsString();
+            if ("paper".equalsIgnoreCase(value) || "purpur".equalsIgnoreCase(value)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void logResult(UpdateCheckResult result) {

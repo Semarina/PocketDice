@@ -8,7 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Parses dice notation like "2d6" or "d20" (if shorthand allowed).
+ * Parses dice notation like "2d6" or "d20".
  * Validates lower bounds: N >= 1, M >= 2.
  */
 public final class DiceParser {
@@ -30,7 +30,7 @@ public final class DiceParser {
         );
     }
 
-    public static DiceSpec parse(String input, boolean allowShorthand) {
+    public static DiceSpec parse(String input) {
         if (input == null || input.isBlank()) {
             throw new DiceParseException(ParseError.MISSING_NOTATION);
         }
@@ -43,16 +43,14 @@ public final class DiceParser {
             return new DiceSpec(dice, faces);
         }
 
-        if (allowShorthand) {
-            Matcher s = SHORTHAND.matcher(input);
-            if (s.matches()) {
-                int faces = parseInt(s.group(1), false);
-                validate(1, faces);
-                return new DiceSpec(1, faces);
-            }
+        Matcher s = SHORTHAND.matcher(input);
+        if (s.matches()) {
+            int faces = parseInt(s.group(1), false);
+            validate(1, faces);
+            return new DiceSpec(1, faces);
         }
 
-        throw new DiceParseException(ParseError.INVALID_NOTATION, allowShorthand);
+        throw new DiceParseException(ParseError.INVALID_NOTATION);
     }
 
     private static int parseInt(String s, boolean diceField) {
@@ -83,24 +81,14 @@ public final class DiceParser {
 
     public static class DiceParseException extends IllegalArgumentException {
         private final ParseError error;
-        private final boolean shorthandAllowed;
-
         public DiceParseException(ParseError error) {
-            this(error, false);
-        }
-
-        public DiceParseException(ParseError error, boolean shorthandAllowed) {
             this.error = error;
-            this.shorthandAllowed = shorthandAllowed;
         }
 
         public ParseError getError() {
             return error;
         }
 
-        public boolean isShorthandAllowed() {
-            return shorthandAllowed;
-        }
     }
 
     public record DiceSpec(int dice, int faces) {}

@@ -1,9 +1,9 @@
 # PocketDice
 
-Lightweight proximity dice rolls for **Paper/Purpur/Folia** and **Fabric/Quilt** (26.1.x).
+Lightweight proximity dice rolls for **Paper/Purpur/Folia** and **Fabric/Quilt**. PocketDice **0.6.0** targets Minecraft **26.3**; PocketDice **0.5.0** targets Minecraft **26.2**.
 
 ## What it does
-- `/roll [NdM]` - roll N dice with M faces. Examples: `/roll` (default `1d100`), `/roll 1d6`, `/roll 2d20`, `/roll d8`.
+- `/roll [NdM]` - roll N dice with M faces. Examples: `/roll` (default `1d100`), `/roll 1d6`, `/roll 2d20`, `/roll d8` (one eight-sided die).
 - `/groll` - global roll (visible to everyone).
 - `/proll` - private roll (visible only to you).
 - Announces proximity results only to players in the same world within `radius` blocks.
@@ -29,14 +29,11 @@ Lightweight proximity dice rolls for **Paper/Purpur/Folia** and **Fabric/Quilt**
 
 ## Compatibility
 
-| Platform | Minecraft Version | Status |
+| Platform | PocketDice 0.6.0 | PocketDice 0.5.0 |
 |---|---|---|
-| Paper | 26.1.x | Supported |
-| Purpur | 26.1.x | Supported |
-| Folia | 26.1.x | Supported |
-| Fabric | 26.1.x | Supported |
-| Quilt | 26.1.x | Supported |
-| Spigot/Bukkit | - | Not supported |
+| Paper/Purpur/Folia | Minecraft 26.3 | Minecraft 26.2 |
+| Fabric/Quilt | Minecraft 26.3 | Minecraft 26.2 |
+| Spigot/Bukkit | Not supported | Not supported |
 
 Java 25 or newer is required.
 
@@ -44,14 +41,14 @@ Java 25 or newer is required.
 
 ### Paper/Purpur/Folia
 
-1. Download `PocketDice-0.4.0-Paper.jar` from [Modrinth](https://modrinth.com/plugin/pocketdice).
+1. Use `PocketDice-0.6.0-Paper.jar` for Minecraft 26.3 or `PocketDice-0.5.0-Paper.jar` for Minecraft 26.2.
 2. Place it in your server's `plugins/` folder.
 3. Restart the server.
 
 ### Fabric/Quilt
 
-1. Install [Fabric Loader](https://fabricmc.net/) and [Fabric API](https://modrinth.com/mod/fabric-api).
-2. Download `PocketDice-0.4.0-Fabric.jar` from [Modrinth](https://modrinth.com/plugin/pocketdice).
+1. Install [Fabric Loader](https://fabricmc.net/) 0.19.5 or newer and [Fabric API](https://modrinth.com/mod/fabric-api) matching your Minecraft version (built with 0.161.0+26.3 or 0.154.0+26.2).
+2. Use `PocketDice-0.6.0-Fabric.jar` for Minecraft 26.3 or `PocketDice-0.5.0-Fabric.jar` for Minecraft 26.2.
 3. Place it in your `mods/` folder.
 4. Launch the server or world.
 
@@ -63,7 +60,6 @@ radius: 16
 default_notation: "1d100"
 max_dice: 50
 max_faces: 1000
-allow_shorthand: true
 
 # Anti-Spam
 cooldowns:
@@ -98,13 +94,21 @@ updates:
 
 ## Building
 
-PocketDice uses Gradle. To build both release jars:
+PocketDice uses Gradle and Java 25. To build the Fabric and Paper jars for Minecraft 26.3 (PocketDice 0.6.0):
 
 ```powershell
-.\gradlew.bat build
+.\gradlew.bat build --console=plain
 ```
 
-The release jars are copied to `build/libs/`:
+To build the Fabric and Paper jars for Minecraft 26.2 (PocketDice 0.5.0):
 
-- `PocketDice-0.4.0-Paper.jar` - For Paper/Purpur/Folia.
-- `PocketDice-0.4.0-Fabric.jar` - For Fabric/Quilt.
+```powershell
+.\gradlew.bat build '-Prelease_target=26.2' --console=plain
+```
+
+Each build generates platform metadata for its selected release and copies only that release's installable jars to `build/libs/`, preserving the other release's jars. Running both commands produces:
+
+- `PocketDice-0.6.0-Paper.jar` and `PocketDice-0.6.0-Fabric.jar` - Minecraft 26.3.
+- `PocketDice-0.5.0-Paper.jar` and `PocketDice-0.5.0-Fabric.jar` - Minecraft 26.2.
+
+`clean` removes build outputs, so use it only before the first build if you want to keep both releases together.

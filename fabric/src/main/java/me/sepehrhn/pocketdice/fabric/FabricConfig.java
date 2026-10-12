@@ -30,7 +30,6 @@ public class FabricConfig {
                     if (map.containsKey("config-version")) DATA.config_version = (int) map.get("config-version");
                     if (map.containsKey("radius")) DATA.radius = (int) map.get("radius");
                     if (map.containsKey("default_notation")) DATA.default_notation = (String) map.get("default_notation");
-                    if (map.containsKey("allow_shorthand")) DATA.allow_shorthand = (boolean) map.get("allow_shorthand");
                     if (map.containsKey("max_dice")) DATA.max_dice = (int) map.get("max_dice");
                     if (map.containsKey("max_faces")) DATA.max_faces = (int) map.get("max_faces");
                     if (map.containsKey("debug")) DATA.debug = (boolean) map.get("debug");
@@ -118,9 +117,6 @@ public class FabricConfig {
         sb.append("# The default dice notation (e.g. 1d100, 2d6) used when rolling without arguments.\n");
         sb.append("default_notation: \"").append(DATA.default_notation).append("\"\n\n");
 
-        sb.append("# Allow players to use shorthand 'd' prefixes for simple faces (e.g. 'd20' instead of '1d20').\n");
-        sb.append("allow_shorthand: ").append(DATA.allow_shorthand).append("\n\n");
-
         sb.append("# Hard limit for the maximum number of dice a player can roll at once to prevent server lag.\n");
         sb.append("max_dice: ").append(DATA.max_dice).append("\n\n");
 
@@ -191,7 +187,6 @@ public class FabricConfig {
         public int config_version = 5;
         public int radius = 16;
         public String default_notation = "1d100";
-        public boolean allow_shorthand = true;
         public int max_dice = 50;
         public int max_faces = 1000;
         public boolean debug = false;
